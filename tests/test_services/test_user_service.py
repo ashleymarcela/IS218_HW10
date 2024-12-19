@@ -156,3 +156,14 @@ async def test_unlock_user_account(db_session, locked_user):
     assert unlocked, "The account should be unlocked"
     refreshed_user = await UserService.get_by_id(db_session, locked_user.id)
     assert not refreshed_user.is_locked, "The user should no longer be locked"
+
+async def test_create_user_with_phone_number():
+    response = client.post("/users/", json={"name": "John", "phone_number": "123-456-7890"})
+    assert response.status_code == 201
+    assert response.json()["phone_number"] == "123-456-7890"
+
+async def test_get_user_with_phone_number():
+    response = client.get("/users/1")
+    assert response.status_code == 200
+    assert response.json()["phone_number"] == "123-456-7890"
+
