@@ -52,6 +52,7 @@ class UserService:
     @classmethod
     async def create(cls, session: AsyncSession, user_data: Dict[str, str], email_service: EmailService) -> Optional[User]:
         try:
+            logger.info(f"=== User: {user_data}")
             validated_data = UserCreate(**user_data).model_dump()
             existing_user = await cls.get_by_email(session, validated_data['email'])
             if existing_user:
@@ -60,10 +61,10 @@ class UserService:
             validated_data['hashed_password'] = hash_password(validated_data.pop('password'))
             new_user = User(**validated_data)
             new_user.verification_token = generate_verification_token()
-            new_nickname = generate_nickname()
-            while await cls.get_by_nickname(session, new_nickname):
-                new_nickname = generate_nickname()
-            new_user.nickname = new_nickname
+           # new_nickname = generate_nickname()
+           # while await cls.get_by_nickname(session, new_nickname):
+           #     new_nickname = generate_nickname()
+           # new_user.nickname = new_nickname
             session.add(new_user)
             await session.commit()
             await email_service.send_verification_email(new_user)
