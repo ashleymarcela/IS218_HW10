@@ -97,7 +97,7 @@ class User(Base):
         self.professional_status_updated_at = func.now()
     
     class User(Base):
-    __tablename__ = "users"
+        __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
