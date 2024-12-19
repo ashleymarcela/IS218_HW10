@@ -5,6 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 from app.models.user_model import Base  # adjust "myapp.models" to the actual location of your Base
+from sqlalchemy.ext.declarative import declarative_base
 
 
 # this is the Alembic Config object, which provides
